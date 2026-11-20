@@ -1,0 +1,25 @@
+services:
+  fleetdeck:
+    build: .
+    container_name: fleetdeck
+    restart: unless-stopped
+    environment:
+      - INSTABOX_KEY_1=${INSTABOX_KEY_1:-}
+      - INSTABOX_KEY_2=${INSTABOX_KEY_2:-}
+      - INSTABOX_KEY_3=${INSTABOX_KEY_3:-}
+    volumes:
+      - ./fleet.yaml:/etc/fleetdeck/fleet.yaml:ro
+      - ./data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.ssh:/root/.ssh:ro
+    networks:
+      - gateway
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.fleetdeck.rule=Host(`${FLEETDECK_HOST:-fleet.example.com}`)"
+      - "traefik.http.routers.fleetdeck.entrypoints=web"
+      - "traefik.http.services.fleetdeck.loadbalancer.server.port=8089"
+
+networks:
+  gateway:
+    external: true

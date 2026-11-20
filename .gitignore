@@ -1,0 +1,27 @@
+# Binaries & build outputs
+bin/
+*.exe
+*.test
+/fleetdeck
+
+# Local secrets & credentials (NEVER COMMIT)
+fleet.yaml
+fleet.test.yaml
+docker-compose.local.yml
+.env*
+!fleet.example.yaml
+!.env.example
+
+# Runtime databases & state
+data/
+*.db
+*.json
+!components.json
+
+# OS & Editor temp files
+.DS_Store
+*.swp
+.idea/
+.vscode/
+PRODUCT.md
+DESIGN.md

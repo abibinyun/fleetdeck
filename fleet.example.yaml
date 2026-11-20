@@ -1,0 +1,44 @@
+server:
+  host: "0.0.0.0"
+  port: 8089
+  poll_interval_seconds: 300
+  auth_username: ""
+  auth_password: ""
+
+nodes:
+  - id: "local-node"
+    name: "Local Machine"
+    provider: "local_docker"
+    tags: ["baremetal"]
+    ingress_domain: "*.example.com"
+    direct_url: "https://fleet.example.com"
+    docker_access:
+      driver: "local_socket"
+      target: "/var/run/docker.sock"
+
+  - id: "remote-vps"
+    name: "Remote VPS Server"
+    provider: "generic_ssh"
+    tags: ["vps", "production"]
+    ingress_domain: "example.com"
+    direct_url: "http://your-vps-ip"
+    docker_access:
+      driver: "ssh"
+      target: "your-vps-ip"
+      port: 22
+      user: "root"
+
+  - id: "instabox-sandbox"
+    name: "Cloud Sandbox"
+    provider: "instabox"
+    tags: ["sandbox", "ephemeral"]
+    ingress_domain: "*.sandbox.example.com"
+    direct_url: ""
+    provider_config:
+      machine_id: "m_example"
+      api_key: "${INSTABOX_KEY_1}"
+      max_run_minutes: "120"
+      reset_threshold_minutes: "110"
+    docker_access:
+      driver: "instabox_exec"
+      target: "m_example"
